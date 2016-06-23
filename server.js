@@ -28,4 +28,6 @@ function start(route, handle){
    console.log("Server has started");
 }
 
+//start the http server
+
 exports.start = start;

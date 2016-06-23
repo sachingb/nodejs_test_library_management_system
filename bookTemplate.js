@@ -1,3 +1,4 @@
+//Template for book structure
 function bookTemplate(na, i, aut, pub, pr, gid){
    this.bookname = na;
    this.bookid = i;

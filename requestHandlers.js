@@ -6,6 +6,7 @@ var crypto = require('crypto');
 const BUCKET = "library";
 const KEY_PREFIX = "book:store:id:";
 
+//using redis for database
 var client = redis.createClient();
 
 function start(){
@@ -15,11 +16,17 @@ function start(){
    });
 }
 
+
+/*Function to create a new record
+1) Create a hash by taking two items which are going to be unique(I'm asuming that the name and id
+are going to be unique).
+2) Create a hset with that as a key and store the value
+*/
 function createNewRecord(response, postData){
    var post = qs.parse(postData);
 
    console.log(post);
-   
+
    name = post["bookname"];
    id = post["bookid"];
    author = post["author"];
@@ -99,6 +106,8 @@ function showAllRecords(response, postData){
    });
 }
 
+//utility function to handle response
+//TODO : handle cases for all responses , 404, 300 etc.
 function sendResponse(response, responseData){
    response.setHeader('Access-Control-Allow-Origin', '*');
    response.writeHead(200, {"Content-Type" : "application/json"});
@@ -106,6 +115,7 @@ function sendResponse(response, responseData){
    response.end();
 }
 
+//TODO : Move all utility functions to a different js file
 function guid(name, id) {
   var shasum = crypto.createHash("md5");
   shasum.update(name+id);

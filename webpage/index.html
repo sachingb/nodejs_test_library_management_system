@@ -35,16 +35,26 @@
         <th>Price</th>
       </tr>
       <tr id="new">
-        <td contenteditable="true">Enter name</td>
-        <td contenteditable="true">Enter id</td>
-        <td contenteditable="true">Enter author</td>
-        <td contenteditable="true">Enter publisher</td>
-        <td contenteditable="true">Enter price</td>
+        <td>
+          <textarea placeholder="Book name"></textarea>
+        </td>
+        <td>
+          <textarea placeholder="Book ID"></textarea>
+        </td>
+        <td>
+          <textarea placeholder="Author"></textarea>
+        </td>
+        <td>
+          <textarea placeholder="Publisher"></textarea>
+        </td>
+        <td>
+          <textarea placeholder="Price"></textarea>
+        </td>
         <td>
           <span class="table-remove glyphicon glyphicon-remove" id = "table-remove"></span>
         </td>
         <td>
-          <button class="btn btn-info" onclick='updateEntry("new")'>Save Data</button>
+          <button class="btn btn-info" onclick='createEntry("new")'>Save Data</button>
         </td>
       </tr>
       <!-- This is our clonable table line -->

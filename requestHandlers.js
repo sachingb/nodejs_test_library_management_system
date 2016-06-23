@@ -18,6 +18,8 @@ function start(){
 function createNewRecord(response, postData){
    var post = qs.parse(postData);
 
+   console.log(post);
+   
    name = post["bookname"];
    id = post["bookid"];
    author = post["author"];
@@ -63,7 +65,7 @@ function deleteRecord(response, postData){
 function editRecord(response, postData){
    post = qs.parse(postData);
    guid = post["guid"];
-   if (guid === ""){
+   if (guid === "new"){
       createNewRecord(response, postData);
       return;
    }

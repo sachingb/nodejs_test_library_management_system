@@ -1,7 +1,10 @@
 var $TABLE = $('#table');
+
 const SHOW_ALL_RECORDS_END_POINT = "http://localhost:8888/showAllRecords";
 const DELETE_RECORD_END_POINT = "http://localhost:8888/deleteRecord";
 const UPDATE_RECORD_END_POINT = "http://localhost:8888/editRecord";
+const CREATE_RECORD_END_POINT = "http://localhost:8888/createNewRecord";
+
 const COLUMN_NAMES = ["bookname","bookid","author","publisher","price"];
 
 
@@ -45,6 +48,26 @@ function deleteEntry(param){
     });
 }
 
+function createEntry(param){
+  var key = "new"
+
+  postObj = {};
+  $("#"+key).each(function(){
+      var i = 0;
+      $('td', this).each(function(){
+        var item = $(this).find(":input").val();
+        postObj[COLUMN_NAMES[i]] = item;
+        i++;
+      });
+  });
+  postObj["guid"] = key;
+
+  $.post(CREATE_RECORD_END_POINT, postObj, 
+    function(data){
+      document.location.href = document.location.href.split("?")[0];
+    });
+}
+
 function updateEntry(param){
   var key = "new"
   
@@ -63,12 +86,12 @@ function updateEntry(param){
   });
   postObj["guid"] = key;
 
-  console.log(postObj);
+  // console.log(postObj);
 
-  // $.post(UPDATE_RECORD_END_POINT, postObj, 
-  //   function(data){
-  //     document.location.href = document.location.href.split("?")[0];
-  //   });
+  $.post(UPDATE_RECORD_END_POINT, postObj, 
+    function(data){
+      document.location.href = document.location.href.split("?")[0];
+    });
 }
 
 function newRow($table,cols, id){

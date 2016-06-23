@@ -1,0 +1,63 @@
+<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<!-- Optional theme -->
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+<link rel="stylesheet" type="text/css" href="sample.css">
+
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.10.2.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+<script type="text/javascript" src="sample.js"></script>
+<script type="text/javascript">
+  $(document).ready(function(){
+    //Attaching event handlers
+    attachHandlers();
+    //Loading all tables
+    loadAllEntries();
+  });
+</script>
+
+<div class="container">
+  <h1>Library System</h1>
+  <p>Through the powers of <strong>contenteditable</strong> and some simple jQuery you can easily create a custom editable table. No need for a robust JavaScript library anymore these days.</p>
+  
+  <ul>
+    <li>A table displaying books present in a library.</li> 
+    <li>Simple / powerful features such as add row, remove row and edit row.</li>
+  </ul>
+  
+  <div id="table" class="table-editable">
+    <span class="table-add glyphicon glyphicon-plus" id="table-add"></span>
+    <table class="table" id="book_table">
+      <tr>
+        <th>Book Name</th>
+        <th>Book Id</th>
+        <th>Author</th>
+        <th>Publisher</th>
+        <th>Price</th>
+      </tr>
+      <tr id="new">
+        <td contenteditable="true">Enter name</td>
+        <td contenteditable="true">Enter id</td>
+        <td contenteditable="true">Enter author</td>
+        <td contenteditable="true">Enter publisher</td>
+        <td contenteditable="true">Enter price</td>
+        <td>
+          <span class="table-remove glyphicon glyphicon-remove" id = "table-remove"></span>
+        </td>
+        <td>
+          <button class="btn btn-info" onclick='updateEntry("new")'>Save Data</button>
+        </td>
+      </tr>
+      <!-- This is our clonable table line -->
+      <tr class="hide">
+        <td contenteditable="true">Enter name</td>
+        <td contenteditable="true">Enter id</td>
+        <td contenteditable="true">Enter author</td>
+        <td contenteditable="true">Enter publisher</td>
+        <td contenteditable="true">Enter price</td>
+        <td>
+          <span class="table-remove glyphicon glyphicon-remove"></span>
+        </td>
+      </tr>
+    </table>
+  </div>
+</div>

@@ -2,6 +2,7 @@ var http = require("http");
 var url = require("url");
 var bookTemplate = require("./bookTemplate");
 var requestHandlers = require("./requestHandlers");
+var staticServer = require("./staticServer");
 
 
 function start(route, handle){
@@ -25,6 +26,7 @@ function start(route, handle){
 
    requestHandlers.start();
    http.createServer(onRequest).listen(8888);
+   staticServer.start();
    console.log("Server has started");
 }
 

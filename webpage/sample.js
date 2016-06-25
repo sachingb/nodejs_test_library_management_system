@@ -42,7 +42,7 @@ function deleteEntry(param){
   var key = param.split("_")[1];
   console.log("Key to be deleted is "+key);
 
-  $.post(DELETE_RECORD_END_POINT, {"guid" : key}, 
+  $.post(DELETE_RECORD_END_POINT, {"guid" : key},
     function(data){
       document.location.href = document.location.href.split("?")[0];
     });
@@ -62,7 +62,7 @@ function createEntry(param){
   });
   postObj["guid"] = key;
 
-  $.post(CREATE_RECORD_END_POINT, postObj, 
+  $.post(CREATE_RECORD_END_POINT, postObj,
     function(data){
       document.location.href = document.location.href.split("?")[0];
     });
@@ -70,7 +70,7 @@ function createEntry(param){
 
 function updateEntry(param){
   var key = "new"
-  
+
   if(param != "new"){
     key = param.split("_")[1];
   }
@@ -88,7 +88,7 @@ function updateEntry(param){
 
   // console.log(postObj);
 
-  $.post(UPDATE_RECORD_END_POINT, postObj, 
+  $.post(UPDATE_RECORD_END_POINT, postObj,
     function(data){
       document.location.href = document.location.href.split("?")[0];
     });
@@ -110,8 +110,10 @@ function makeRow(data){
   var deleteID = "delete_"+dataID;
   var saveID = "save_"+dataID;
 
-  tdName = ("<textarea id=bookname >"+data["bookname"]+"</textarea>");
-  tdId = ("<textarea id=bookid >"+data["bookid"]+"</textarea>");
+  //Disabling edit option for name and id field as these are used to create the hash
+  tdName = ("<textarea id=bookname disabled='true'>"+data["bookname"]+"</textarea>");
+  tdId = ("<textarea id=bookid disabled='true'>"+data["bookid"]+"</textarea>");
+
   tdAuthor = ("<textarea id=author >"+data["author"]+"</textarea>");
   tdPublisher = ("<textarea id=publisher >"+data["publisher"]+"</textarea>");
   tdPrice = ("<textarea id=price >"+data["price"]+"</textarea>");

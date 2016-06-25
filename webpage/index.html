@@ -17,15 +17,14 @@
 
 <div class="container">
   <h1>Library System</h1>
-  <p>Through the powers of <strong>contenteditable</strong> and some simple jQuery you can easily create a custom editable table. No need for a robust JavaScript library anymore these days.</p>
-  
+  <p>Simple Library Management tool developed using node.js jQuery and bootstrap</p>
+
   <ul>
-    <li>A table displaying books present in a library.</li> 
+    <li>A table displaying books present in a library.</li>
     <li>Simple / powerful features such as add row, remove row and edit row.</li>
   </ul>
-  
+
   <div id="table" class="table-editable">
-    <span class="table-add glyphicon glyphicon-plus" id="table-add"></span>
     <table class="table" id="book_table">
       <tr>
         <th>Book Name</th>
@@ -55,17 +54,6 @@
         </td>
         <td>
           <button class="btn btn-info" onclick='createEntry("new")'>Save Data</button>
-        </td>
-      </tr>
-      <!-- This is our clonable table line -->
-      <tr class="hide">
-        <td contenteditable="true">Enter name</td>
-        <td contenteditable="true">Enter id</td>
-        <td contenteditable="true">Enter author</td>
-        <td contenteditable="true">Enter publisher</td>
-        <td contenteditable="true">Enter price</td>
-        <td>
-          <span class="table-remove glyphicon glyphicon-remove"></span>
         </td>
       </tr>
     </table>

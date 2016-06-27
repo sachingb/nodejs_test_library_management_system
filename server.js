@@ -10,7 +10,7 @@ function start(route, handle){
       var postData = "";
       var pathname = url.parse(request.url).pathname;
 
-      console.log("Reuest for "+ pathname + "received.");
+      console.log("Reuest for "+ pathname + " received.");
 
       request.setEncoding("utf8");
 

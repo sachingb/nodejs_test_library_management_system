@@ -1,10 +1,14 @@
 var bookTemplate = require("./bookTemplate");
 var redis = require("redis");
 var qs = require("querystring");
-var crypto = require('crypto');
+var utils = require("./util");
 
 const BUCKET = "library";
 const KEY_PREFIX = "book:store:id:";
+
+const INVALID_REQUEST = "0";
+const SUCCESS = "1";
+const ERROR = "2";
 
 //using redis for database
 var client = redis.createClient();
@@ -32,7 +36,13 @@ function createNewRecord(response, postData){
    author = post["author"];
    publisher = post["publisher"];
    price = post["price"];
-   gid = guid(name, id);
+
+   if (name == "" || id == ""){
+      sendResponse(response, constructMessage(INVALID_REQUEST, "Request must have name and id"));
+      return;
+   }
+
+   gid = utils.guid(name, id);
    //bookTemplate(na, i, aut, pub, pr, gid)
    bookEntry = bookTemplate.initialize(name, id, author, publisher, price, gid);
 
@@ -40,17 +50,20 @@ function createNewRecord(response, postData){
    client.hexists(BUCKET, key, function(err, reply){
       if (err){
          console.error("error response --- " + err );
+         sendResponse(response, constructMessage(ERROR, "Something went wrong"));
          return;
       }
 
       if(reply === 1){
          console.log(key,"already exists");
+         sendResponse(response, constructMessage(ERROR, "Entry with the book name already present"));
+         return;
       }else{
          client.hset(BUCKET, key, JSON.stringify(bookEntry));
       }
    });
 
-   sendResponse(response, bookEntry);
+   sendResponse(response, constructMessage(SUCCESS,bookEntry));
 }
 
 function deleteRecord(response, postData){
@@ -59,12 +72,13 @@ function deleteRecord(response, postData){
    client.hexists(BUCKET, key, function(err, reply){
       if(err){
          console.error("error response --- " + err);
+         sendResponse(response, constructMessage(ERROR, "Something went wrong"));
          return;
       }
 
       if(reply === 1){
          client.hdel(BUCKET, key);
-         sendResponse(response, {"status" : "success"});
+         sendResponse(response, constructMessage(SUCCESS, "Deleted record successfully"));
       }
    })
 }
@@ -80,6 +94,7 @@ function editRecord(response, postData){
    client.hexists(BUCKET, key, function(err, reply){
       if(err){
          console.error("error response --- " + err);
+         sendResponse(response, constructMessage(ERROR, "Something went wrong"));
          return;
       }
       if(reply === 1){
@@ -91,7 +106,7 @@ function editRecord(response, postData){
          bookEntry = bookTemplate.initialize(name, id, author, publisher, price, guid);
          client.hset(BUCKET, key, JSON.stringify(bookEntry));
 
-         sendResponse(response, bookEntry);
+         sendResponse(response, constructMessage("SUCCESS",bookEntry));
       }
    });
 }
@@ -100,14 +115,13 @@ function showAllRecords(response, postData){
    client.hgetall(BUCKET, function (err, replyObject) {
       if(err){
          console.error("Error while getting all --- "+err);
+         sendResponse(response, constructMessage(ERROR, "Something went wrong"));
          return;
       }
-      sendResponse(response, replyObject);
+      sendResponse(response, constructMessage(SUCCESS,replyObject));
    });
 }
 
-//utility function to handle response
-//TODO : handle cases for all responses , 404, 300 etc.
 function sendResponse(response, responseData){
    response.setHeader('Access-Control-Allow-Origin', '*');
    response.writeHead(200, {"Content-Type" : "application/json"});
@@ -115,13 +129,11 @@ function sendResponse(response, responseData){
    response.end();
 }
 
-//TODO : Move all utility functions to a different js file
-function guid(name, id) {
-  var shasum = crypto.createHash("md5");
-  shasum.update(name+id);
-  var op = shasum.digest('hex');
-  return op;
+//Utility function to construct messages
+function constructMessage(msg, data){
+   return {"Msg" : msg, "Data": data};
 }
+
 
 exports.start = start;
 exports.createNewRecord = createNewRecord;

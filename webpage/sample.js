@@ -6,34 +6,24 @@ const UPDATE_RECORD_END_POINT = "http://localhost:8888/editRecord";
 const CREATE_RECORD_END_POINT = "http://localhost:8888/createNewRecord";
 
 const COLUMN_NAMES = ["bookname","bookid","author","publisher","price"];
+const INVALID_REQUEST = "0";
+const SUCCESS = "1";
+const ERROR = "2";
 
-
-function attachHandlers(){
-
-  $('.table-add').click(function () {
-    var $clone = $TABLE.find('tr.hide').clone(true).removeClass('hide table-line');
-    $TABLE.find('table').append($clone);
-  });
-
-  $('.table-remove').click(function () {
-    $(this).parents('tr').detach();
-  });
-
-};
 
 function loadAllEntries(){
 
   $.post(SHOW_ALL_RECORDS_END_POINT,{},
     function(data){
       //map of all the book entries
-      console.log(data);
-      for (var key in data) {
+      if(data["Msg"] === SUCCESS ){
+        for (var key in data["Data"]) {
 
-        if(data.hasOwnProperty(key)){
-          console.log(key + " " + data[key]);
-          makeRow(JSON.parse(data[key]));
+          if(data["Data"].hasOwnProperty(key)){
+            makeRow(JSON.parse(data["Data"][key]));
+          }
+
         }
-
       }
     });
 }
@@ -44,7 +34,9 @@ function deleteEntry(param){
 
   $.post(DELETE_RECORD_END_POINT, {"guid" : key},
     function(data){
-      document.location.href = document.location.href.split("?")[0];
+      if(data["Msg"] === SUCCESS){
+        document.location.href = document.location.href.split("?")[0];
+      }
     });
 }
 
@@ -64,7 +56,11 @@ function createEntry(param){
 
   $.post(CREATE_RECORD_END_POINT, postObj,
     function(data){
-      document.location.href = document.location.href.split("?")[0];
+      if(data["Msg"] === SUCCESS){
+        document.location.href = document.location.href.split("?")[0];
+      }else{
+        alert(data["Data"]);
+      }
     });
 }
 
@@ -90,7 +86,9 @@ function updateEntry(param){
 
   $.post(UPDATE_RECORD_END_POINT, postObj,
     function(data){
-      document.location.href = document.location.href.split("?")[0];
+      if(data["Msg"] === SUCCESS){
+        document.location.href = document.location.href.split("?")[0];
+      }
     });
 }
 
